@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sellingportal/data/model/product_model.dart';
 import 'package:sellingportal/logic/services/format.dart';
 import 'package:sellingportal/presentation/screens/screen/home/productPage2.dart';
@@ -93,23 +94,21 @@ class cardItem extends StatelessWidget {
                           productModel.title!,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: uiColor.title),
+                          style: GoogleFonts.poppins(fontWeight: FontWeight.bold,fontSize: 20)
                         )),
                         SizedBox(
                           height: 12,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            Formatter.formatPrice(productModel.price!),
-                            style:
-                                TextStyle(fontSize: 16, color: uiColor.subtitle)
-                                    .copyWith(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
+                          child: Expanded(
+                            child: Text(
+                              Formatter.formatPrice(productModel.price!),
+
+                              overflow: TextOverflow.ellipsis,
+                              style:
+                              GoogleFonts.poppins(fontWeight: FontWeight.w600,fontSize: 16,color: Color.fromRGBO(0, 0, 0, 0.8)),
+                            ),
                           ),
                         ),
                       ],
