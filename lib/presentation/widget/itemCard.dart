@@ -94,20 +94,20 @@ class cardItem extends StatelessWidget {
                           productModel.title!,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.poppins(fontWeight: FontWeight.bold,fontSize: 20)
+                          style: GoogleFonts.poppins(fontWeight: FontWeight.w500,fontSize: 17)
                         )),
                         SizedBox(
-                          height: 12,
+                          height: 5,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
+                          padding: const EdgeInsets.only(left: 5),
                           child: Expanded(
                             child: Text(
                               Formatter.formatPrice(productModel.price!),
 
                               overflow: TextOverflow.ellipsis,
                               style:
-                              GoogleFonts.poppins(fontWeight: FontWeight.w600,fontSize: 16,color: Color.fromRGBO(0, 0, 0, 0.8)),
+                              GoogleFonts.poppins(fontWeight: FontWeight.w600,fontSize: 14,color: Color.fromRGBO(0, 0, 0, 0.8)),
                             ),
                           ),
                         ),

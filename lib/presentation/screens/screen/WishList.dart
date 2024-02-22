@@ -26,43 +26,27 @@ class _MyWishListScreenState extends State<MyWishListScreen> {
     final double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('My Wishlist',style: GoogleFonts.poppins(color: Colors.white),),
+        backgroundColor: Color.fromRGBO(74, 67, 236, 1),
+      ),
       body: RefreshIndicator(
         onRefresh: () async{
           setState(() {
             return BlocProvider.of<MyWishListCubit>(context).initialize(UserToken.id!);
           });
         },
-        child: SingleChildScrollView(
-          child:Column(
-            children: [
-              SizedBox(
-                height: height*.20,
-                child: Stack(children: [
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      height: height * 0.20,
-                      child: BackgroundWave(
-                        height: height * 20,
-                        colors: Color.fromRGBO(74, 67, 236, 1),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: AppBar(
-                      title: Text('My Wishlist',style: GoogleFonts.poppins(color: Colors.white),),
-                      backgroundColor: Color.fromRGBO(74, 67, 236, 1),
-                    ),
-                  ),
-                ]),
-              ),
-              //items
-              Container(
+        child: ListView(
+          children: [
+            BackgroundWave(
+              height: 50,
+              colors: Color.fromRGBO(74, 67, 236, 1),
+            ),
+
+
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Container(
                 child: BlocBuilder<MyWishListCubit, MyWishListState>(
                   builder: (context, state) {
                     if (state is MyWishListLoadingState && state.mywshListItem.isEmpty) {
@@ -86,7 +70,7 @@ class _MyWishListScreenState extends State<MyWishListScreen> {
                       itemCount: state.mywshListItem.length,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.8,
+                        childAspectRatio: .8,
                         crossAxisCount: 2,
                       ),
                       itemBuilder: (BuildContext context, int index) {
@@ -99,8 +83,8 @@ class _MyWishListScreenState extends State<MyWishListScreen> {
                   },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
 

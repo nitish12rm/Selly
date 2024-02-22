@@ -82,6 +82,7 @@ class _productScreenState extends State<productScreen> {
                       height: height * .19,
                       width: 200,
                       child: CarouselSlider.builder(
+                        slideIndicator: CircularSlideIndicator(currentIndicatorColor: Colors.white),
                         itemCount: widget.productModel.photos?.length ?? 0,
                         slideBuilder: (index) {
                           return Image.network(
@@ -137,8 +138,8 @@ class _productScreenState extends State<productScreen> {
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
                                   color: Colors.black,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold)),
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w500)),
                         ),
                         SizedBox(
                           width: 20,
@@ -219,7 +220,7 @@ class _productScreenState extends State<productScreen> {
                       style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 25,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
                       height: 5,
@@ -264,7 +265,7 @@ class _productScreenState extends State<productScreen> {
                       style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 25,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
                       height: 5,
@@ -309,7 +310,7 @@ class _productScreenState extends State<productScreen> {
                       style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 25,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
                       height: 5,
@@ -406,19 +407,8 @@ class _productScreenState extends State<productScreen> {
                 ),
               ),
               (widget.productModel.listedBy == UserToken.id!)
-                  ? ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          elevation: 0,
-                          backgroundColor: Color.fromRGBO(86, 105, 255, 1)),
-                      onPressed: _showAlertDialog,
-                      child: Text(
-                        'Delete',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  : ElevatedButton(
+
+                  ?ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
@@ -433,7 +423,18 @@ class _productScreenState extends State<productScreen> {
                         'Chat',
                         style: TextStyle(color: Colors.white),
                       ),
-                    ),
+                    ):ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    elevation: 0,
+                    backgroundColor: Color.fromRGBO(86, 105, 255, 1)),
+                onPressed: _showAlertDialog,
+                child: Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ],
           ),
         ),

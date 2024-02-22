@@ -74,6 +74,7 @@ class _FormPageState extends State<FormPage> {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             log('...........≥..uploaded..........');
             Timer(Duration(milliseconds: 200), () {
+              BlocProvider.of<ProductCubit>(context).initialize(UserToken.token!);
               Navigator.popUntil(context, (route) => route.isFirst);
               Navigator.pushReplacementNamed(context, homeScreen.routeName);
             });
@@ -225,7 +226,9 @@ class _FormPageState extends State<FormPage> {
             CustomInput(
               hint: "Tags*",
               inputBorder: OutlineInputBorder(),
-              onChanged: (value) {},
+              onChanged: (value) {
+                productModel.tags = value.toString();
+              },
 
             ),
             // CustomInput(hint: "Quantity*", inputBorder: OutlineInputBorder(),onChanged: (value){productModel.=value;},),

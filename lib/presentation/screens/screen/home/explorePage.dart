@@ -132,7 +132,7 @@ class _explorePageState extends State<explorePage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding: const EdgeInsets.all(15),
                         child: Container(
                           child: BlocBuilder<ProductCubit,ProductState>(
                               builder: (context,state) {
