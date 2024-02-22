@@ -26,7 +26,7 @@ class FormPage extends StatefulWidget {
   static const String routeName = 'FormPage';
 
   String catId;
-   FormPage({Key? key,required this.catId}) : super(key: key);
+  FormPage({Key? key,required this.catId}) : super(key: key);
 
   @override
   _FormPageState createState() => _FormPageState();
@@ -74,14 +74,15 @@ class _FormPageState extends State<FormPage> {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             log('...........≥..uploaded..........');
             Timer(Duration(milliseconds: 200), () {
+              Navigator.popUntil(context, (route) => route.isFirst);
               Navigator.pushReplacementNamed(context, homeScreen.routeName);
             });
 
           }
           if(state is ProductUploadErrorState){
-              log('in stepperpage: ${state.message.toString()}');
-              SnackBar snackBar = SnackBar(content: Text('Upload fail!'),backgroundColor: Colors.red,);
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            log('in stepperpage: ${state.message.toString()}');
+            SnackBar snackBar = SnackBar(content: Text('Upload fail!'),backgroundColor: Colors.red,);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         },
         child: SafeArea(
@@ -109,8 +110,8 @@ class _FormPageState extends State<FormPage> {
                   onStepCancel: () => currentStep == 0
                       ? null
                       : setState(() {
-                          currentStep -= 1;
-                        }),
+                    currentStep -= 1;
+                  }),
                   onStepContinue: () async {
                     bool isLastStep = (currentStep == getSteps().length - 1);
                     if (isLastStep) {
@@ -197,23 +198,23 @@ class _FormPageState extends State<FormPage> {
                 productModel.description = value;
               },
             ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Condition', style: commonTextsStyle(fontsize: 12),),
-            SizedBox(height: 8),
-            CustomRadioButton(options: ['New', 'Slightly Used', 'Old'], onChanged: (condition) {
-              setState(() {
-                  _selectedCondition = condition;
-                });
-                // Assign the selected condition to your productModel or handle it as per your logic
-              productModel.condition = _selectedCondition;
-              log(_selectedCondition);
-              log(condition);
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Condition', style: commonTextsStyle(fontsize: 12),),
+                  SizedBox(height: 8),
+                  CustomRadioButton(options: ['New', 'Slightly Used', 'Old'], onChanged: (condition) {
+                    setState(() {
+                      _selectedCondition = condition;
+                    });
+                    // Assign the selected condition to your productModel or handle it as per your logic
+                    productModel.condition = _selectedCondition;
+                    log(_selectedCondition);
+                    log(condition);
 
-              },
-            ),
-      ]),
+                  },
+                  ),
+                ]),
             // CustomInput(
             //   hint: "Category*",
             //   inputBorder: OutlineInputBorder(),

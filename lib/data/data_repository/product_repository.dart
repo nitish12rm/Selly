@@ -193,4 +193,17 @@ Future<List<ProductModel>> Search(String query, String BEARER_TOKEN) async{
     }
     return [];
 }
+//Delete
+  Future<String> Delete(String productId, String BEARER_TOKEN) async{
+    Response response = await _api.sendRequest.delete(
+        'user/listing//delete/${productId}',
+        options: Options(headers:  {'Authorization': BEARER_TOKEN})
+    );
+    ApiResponse apiResponse = ApiResponse.fromResponse(response);
+    if(!apiResponse.success){
+      return apiResponse.message.toString();
+    }
+    return 'something went wrong';
+
+  }
 }

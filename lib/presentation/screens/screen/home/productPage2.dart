@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sellingportal/data/data_repository/product_repository.dart';
 import 'package:sellingportal/data/model/product_model.dart';
 import 'package:sellingportal/logic/cubits/my%20wish%20lis/myWishList_state.dart';
 import 'package:sellingportal/logic/cubits/my%20wish%20lis/mywishlist_cubit.dart';
+import 'package:sellingportal/logic/cubits/myItems/myItems_cubit.dart';
+import 'package:sellingportal/logic/cubits/user/userToke.dart';
 import 'package:sellingportal/logic/cubits/user/user_cubit.dart';
 import 'package:sellingportal/logic/cubits/user/user_state.dart';
 import 'package:sellingportal/logic/services/format.dart';
@@ -12,26 +16,39 @@ import 'package:sellingportal/res/colors/colors.dart';
 import 'package:sellingportal/res/drawable/backgroundWave.dart';
 import 'package:telegram/telegram.dart';
 
-class productScreen extends StatelessWidget {
+class productScreen extends StatefulWidget {
   ProductModel productModel;
 
   productScreen({super.key, required this.productModel});
 
-  Colours uiColor = Colours();
   @override
   static const String routeName = 'productScreen';
 
-  Widget build(BuildContext context) {
-    UserCubit userCubit= BlocProvider.of<UserCubit>(context);
-    late UserLoggedInState ?userState;
-    if(userCubit.state is UserLoggedInState){
-     userState = userCubit.state as UserLoggedInState;
+  @override
+  State<productScreen> createState() => _productScreenState();
+}
 
+class _productScreenState extends State<productScreen> {
+  Colours uiColor = Colours();
+
+  Widget build(BuildContext context) {
+    UserCubit userCubit = BlocProvider.of<UserCubit>(context);
+    late UserLoggedInState? userState;
+    if (userCubit.state is UserLoggedInState) {
+      userState = userCubit.state as UserLoggedInState;
     }
 
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(
+          74,
+          67,
+          236,
+          1,
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -41,9 +58,9 @@ class productScreen extends StatelessWidget {
                 children: [
                   BackgroundWave(
                       colors: Color.fromRGBO(23, 16, 193, 1),
-                      height: height * .40),
+                      height: height * .30),
                   BackgroundWave(
-                      height: height * .32,
+                      height: height * .22,
                       colors: Color.fromRGBO(
                         53,
                         45,
@@ -51,69 +68,56 @@ class productScreen extends StatelessWidget {
                         1,
                       )),
                   BackgroundWave(
-                      height: height * .24,
+                      height: height * .14,
                       colors: Color.fromRGBO(
                         74,
                         67,
                         236,
                         1,
                       )),
-                  Padding(
-                      padding: EdgeInsets.all(10),
-                      child: SafeArea(
-                          child: IconButton(
-                              color: Colors.black,
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(Icons.arrow_back)))),
-                  Container(
-                    width: double.infinity,
-                    height: height * .40,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 70),
-                      child: Center(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          child: Container(
-
-                            height: 250,
-                            width: 200,
-                          
-                            child: CarouselSlider.builder(
-
-                              itemCount: productModel.photos?.length ?? 0,
-                              slideBuilder: (index) {
-                                return Container(
-                                  child: Image.network(
-                                    productModel.photos![index],
-                                    frameBuilder: (BuildContext context,
-                                        Widget child,
-                                        int? frame,
-                                        bool wasSynchronouslyLoaded) {
-                                      if (wasSynchronouslyLoaded) {
-                                        return child;
-                                      }
-                                      return AnimatedOpacity(
-                                        opacity: frame == null ? 0 : 1,
-                                        duration: const Duration(seconds: 1),
-                                        curve: Curves.easeOut,
-                                        child: child,
-                                      );
-                                    },
-                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-
-                                      return Center(child: const Text('😢'));
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
+                  Positioned(
+                    top: 30,
+                    left: width / 4,
+                    child: SizedBox(
+                      height: height * .19,
+                      width: 200,
+                      child: CarouselSlider.builder(
+                        itemCount: widget.productModel.photos?.length ?? 0,
+                        slideBuilder: (index) {
+                          return Image.network(
+                            widget.productModel.photos![index],
+                            frameBuilder: (BuildContext context, Widget child,
+                                int? frame, bool wasSynchronouslyLoaded) {
+                              if (wasSynchronouslyLoaded) {
+                                return child;
+                              }
+                              return AnimatedOpacity(
+                                opacity: frame == null ? 0 : 1,
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.easeOut,
+                                child: child,
+                              );
+                            },
+                            errorBuilder: (BuildContext context,
+                                Object exception, StackTrace? stackTrace) {
+                              return Center(child: const Text('😢'));
+                            },
+                          );
+                        },
                       ),
                     ),
-                  )
+                  ),
+                  // Container(
+                  //   width: double.infinity,
+                  //
+                  //   height: height * .29,
+                  //   child: Center(
+                  //     child: ClipRRect(
+                  //       borderRadius: BorderRadius.all(Radius.circular(50)),
+                  //       child:
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
               //Stack khatam
@@ -126,53 +130,65 @@ class productScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(productModel.title!,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20)),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.location_pin,
-                                  size: 20,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text('Jss Academy of Technical Education'),
-                              ],
-                            )
-                          ],
+                        Expanded(
+                          child: Text(widget.productModel.title!,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold)),
                         ),
-                        BlocBuilder<MyWishListCubit,MyWishListState>(
-                          builder: (context,state) {
-                            return IconButton(
-                                onPressed: () {
-
-                                  if( (BlocProvider.of<MyWishListCubit>(context).cartContains(productModel)))
-                                  {
-                                    BlocProvider.of<MyWishListCubit>(context)
-                                        .removeFromCart(productModel);
-                                  }
-                                 else {
+                        SizedBox(
+                          width: 20,
+                        ),
+                        BlocBuilder<MyWishListCubit, MyWishListState>(
+                            builder: (context, state) {
+                          return IconButton(
+                              onPressed: () {
+                                if ((BlocProvider.of<MyWishListCubit>(context)
+                                    .cartContains(widget.productModel))) {
                                   BlocProvider.of<MyWishListCubit>(context)
-                                      .addToCart(productModel);
+                                      .removeFromCart(widget.productModel);
+                                } else {
+                                  BlocProvider.of<MyWishListCubit>(context)
+                                      .addToCart(widget.productModel);
                                 }
                               },
-                                icon: (BlocProvider.of<MyWishListCubit>(context).cartContains(productModel))?Icon(FontAwesomeIcons.solidBookmark):Icon(FontAwesomeIcons.bookmark));
-                          }
-                        ),
-
+                              icon: (BlocProvider.of<MyWishListCubit>(context)
+                                      .cartContains(widget.productModel))
+                                  ? Icon(
+                                      FontAwesomeIcons.solidBookmark,
+                                      size: 30,
+                                    )
+                                  : Icon(FontAwesomeIcons.bookmark, size: 30));
+                        }),
                       ],
                     ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.location_pin,
+                          size: 20,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                            child: Text('Jss Academy of Technical Education',
+                                softWrap: false,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal))),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -181,23 +197,43 @@ class productScreen extends StatelessWidget {
                 height: 10,
               ),
               Container(
+                margin: EdgeInsets.only(left: 15, right: 15),
                 height: 1,
-                color: Colors.grey,
-              ), //line
+                color: Color.fromRGBO(
+                  12,
+                  12,
+                  12,
+                  0.1,
+                ),
+              ),
+              //line
 
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Description',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: GoogleFonts.poppins(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      productModel.description!,
-                      maxLines: 20,
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Flexible(
+                      child: Text(
+                        widget.productModel.description!,
+                        maxLines: 20,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
                     ),
                   ],
                 ),
@@ -206,23 +242,43 @@ class productScreen extends StatelessWidget {
                 height: 10,
               ),
               Container(
+                margin: EdgeInsets.only(left: 15, right: 15),
                 height: 1,
-                color: Colors.grey,
-              ), //line
+                color: Color.fromRGBO(
+                  12,
+                  12,
+                  12,
+                  0.1,
+                ),
+              ),
+              //line
 
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Condition',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: GoogleFonts.poppins(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      productModel.condition!,
-                      maxLines: 20,
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Flexible(
+                      child: Text(
+                        widget.productModel.condition!,
+                        maxLines: 20,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
                     ),
                   ],
                 ),
@@ -231,23 +287,43 @@ class productScreen extends StatelessWidget {
                 height: 10,
               ),
               Container(
+                margin: EdgeInsets.only(left: 15, right: 15),
                 height: 1,
-                color: Colors.grey,
-              ), //line
+                color: Color.fromRGBO(
+                  12,
+                  12,
+                  12,
+                  0.1,
+                ),
+              ),
+              //line
 
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Use Period',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: GoogleFonts.poppins(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      productModel.usePeriod!,
-                      maxLines: 20,
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Flexible(
+                      child: Text(
+                        widget.productModel.usePeriod!,
+                        maxLines: 20,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
                     ),
                   ],
                 ),
@@ -256,49 +332,56 @@ class productScreen extends StatelessWidget {
                 height: 10,
               ),
               Container(
+                margin: EdgeInsets.only(left: 15, right: 15),
                 height: 1,
-                color: Colors.grey,
-              ), //line
+                color: Color.fromRGBO(
+                  12,
+                  12,
+                  12,
+                  0.1,
+                ),
+              ),
+              //line
 
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Defects',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    Text(
-                      'lorem ipsum',
-                      maxLines: 20,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Text(
-                'Simillar items',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: SizedBox(
-                  height: 250,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 4,
-                    shrinkWrap: false,
-                    itemBuilder: (BuildContext context, int index) {
-                      // return cardItem();
-                      return Container();
-                    },
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(10),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         'Defects',
+              //         style:
+              //             TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              //       ),
+              //       Text(
+              //         'lorem ipsum',
+              //         maxLines: 20,
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 30,
+              // ),
+              // Text(
+              //   'Simillar items',
+              //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 8.0),
+              //   child: SizedBox(
+              //     height: 250,
+              //     child: ListView.builder(
+              //       scrollDirection: Axis.horizontal,
+              //       itemCount: 4,
+              //       shrinkWrap: false,
+              //       itemBuilder: (BuildContext context, int index) {
+              //         // return cardItem();
+              //         return Container();
+              //       },
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -314,41 +397,82 @@ class productScreen extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                child: Row(
-                  children: [
-                    Text('MRP'),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      Formatter.formatPrice(productModel.price!),
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    elevation: 0,
-                    backgroundColor: Color.fromRGBO(86, 105, 255, 1)),
-                onPressed: () => {
-
-                  //to open telegram
-                  //link-->user telegram username
-                  Telegram.send(username: productModel.link!),
-                },
+              Expanded(
                 child: Text(
-                  'Chat',
-                  style: TextStyle(color: Colors.white),
+                  Formatter.formatPrice(widget.productModel.price!),
+                  maxLines: 2,
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
+              (widget.productModel.listedBy == UserToken.id!)
+                  ? ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          elevation: 0,
+                          backgroundColor: Color.fromRGBO(86, 105, 255, 1)),
+                      onPressed: _showAlertDialog,
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  : ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          elevation: 0,
+                          backgroundColor: Color.fromRGBO(86, 105, 255, 1)),
+                      onPressed: () => {
+                        //to open telegram
+                        //link-->user telegram username
+                        Telegram.send(username: widget.productModel.link!),
+                      },
+                      child: Text(
+                        'Chat',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
             ],
           ),
         ),
       ),
+    );
+
+  }
+  Future<void> _showAlertDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog( // <-- SEE HERE
+          title: const Text('Cancel booking'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Are you sure want to delete AD?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () async{
+                    await productRepository.Delete(
+                    widget.productModel.sId!, UserToken.token!);
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
