@@ -26,6 +26,8 @@ class _MyWishListScreenState extends State<MyWishListScreen> {
     final double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Color.fromRGBO(255 , 255, 255, 100),
+
       appBar: AppBar(
         title: Text('My Wishlist',style: GoogleFonts.poppins(color: Colors.white),),
         backgroundColor: Color.fromRGBO(74, 67, 236, 1),

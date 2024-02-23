@@ -35,6 +35,8 @@ class CategorySelectionPage extends StatelessWidget {
     final cubit = BlocProvider.of<CategoryCubit>(context);
 
     return Scaffold(
+      backgroundColor: Color.fromRGBO(255 , 255, 255, 100),
+
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [

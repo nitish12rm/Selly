@@ -25,7 +25,9 @@ class _categoryPageState extends State<categoryPage> {
 final cubit = BlocProvider.of<CategoryProductCubit>(context);
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(255 , 255, 255, 30),
+
+        appBar: AppBar(
         title: Text(cubit.category.title!,style: GoogleFonts.poppins(fontSize: 20,color: Colors.white),),
         backgroundColor: Color.fromRGBO(74, 67, 236, 1),
       ),
@@ -53,19 +55,22 @@ final cubit = BlocProvider.of<CategoryProductCubit>(context);
                         child: Text("No product listed 😢"),
                       );
                     }
-                    return GridView.builder(
-                      padding: EdgeInsets.only(bottom: 110),
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: state.products.length,
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.8,
-                        crossAxisCount: 2,
+                    return Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: GridView.builder(
+                        padding: EdgeInsets.only(bottom: 110),
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: state.products.length,
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 0.8,
+                          crossAxisCount: 2,
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          final product = state.products[index];
+                          return cardItem(productModel: product,);
+                        },
                       ),
-                      itemBuilder: (BuildContext context, int index) {
-                        final product = state.products[index];
-                        return cardItem(productModel: product,);
-                      },
                     );
                   }
               ),

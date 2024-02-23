@@ -41,6 +41,8 @@ class _productScreenState extends State<productScreen> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Color.fromRGBO(255 , 255, 255, 10),
+
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(
           74,
@@ -138,7 +140,7 @@ class _productScreenState extends State<productScreen> {
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
                                   color: Colors.black,
-                                  fontSize: 25,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w500)),
                         ),
                         SizedBox(
@@ -219,7 +221,7 @@ class _productScreenState extends State<productScreen> {
                       'Description',
                       style: GoogleFonts.poppins(
                           color: Colors.black,
-                          fontSize: 25,
+                          fontSize: 20,
                           fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
@@ -264,7 +266,7 @@ class _productScreenState extends State<productScreen> {
                       'Condition',
                       style: GoogleFonts.poppins(
                           color: Colors.black,
-                          fontSize: 25,
+                          fontSize: 20,
                           fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
@@ -278,7 +280,7 @@ class _productScreenState extends State<productScreen> {
                         style: GoogleFonts.poppins(
                             color: Colors.black,
                             fontSize: 15,
-                            fontWeight: FontWeight.normal),
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                   ],
@@ -309,7 +311,7 @@ class _productScreenState extends State<productScreen> {
                       'Use Period',
                       style: GoogleFonts.poppins(
                           color: Colors.black,
-                          fontSize: 25,
+                          fontSize: 20,
                           fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
@@ -409,21 +411,6 @@ class _productScreenState extends State<productScreen> {
               (widget.productModel.listedBy == UserToken.id!)
 
                   ?ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          elevation: 0,
-                          backgroundColor: Color.fromRGBO(86, 105, 255, 1)),
-                      onPressed: () => {
-                        //to open telegram
-                        //link-->user telegram username
-                        Telegram.send(username: widget.productModel.link!),
-                      },
-                      child: Text(
-                        'Chat',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ):ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -432,6 +419,21 @@ class _productScreenState extends State<productScreen> {
                 onPressed: _showAlertDialog,
                 child: Text(
                   'Delete',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ):ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    elevation: 0,
+                    backgroundColor: Color.fromRGBO(86, 105, 255, 1)),
+                onPressed: () => {
+                  //to open telegram
+                  //link-->user telegram username
+                  Telegram.send(username: widget.productModel.link!),
+                },
+                child: Text(
+                  'Chat',
                   style: TextStyle(color: Colors.white),
                 ),
               ),

@@ -32,6 +32,7 @@ class homeScreen extends StatefulWidget {
 
 class _homeScreenState extends State<homeScreen> {
   final _controllerBottom = NotchBottomBarController(index: 0);
+  int _selectedIndex = 0;
   int currentIndex = 0;
 
   @override
@@ -60,6 +61,8 @@ class _homeScreenState extends State<homeScreen> {
     ];
 
     return Scaffold(
+
+      backgroundColor: Color.fromRGBO(255 , 255, 255, 40),
       resizeToAvoidBottomInset: false,
       //very important.. keyboard open karne pe scrollable widget ko bahar fek dera tha.. usse bachane ke liye use kia h isse.
 
@@ -72,77 +75,81 @@ class _homeScreenState extends State<homeScreen> {
             bottomBarPages.length, (index) => bottomBarPages[index]),
       ),
 
-      //BottomBar
-      // bottomNavigationBar: AnimatedNotchBottomBar(
-      //   kBottomRadius: 35,
-      //   kIconSize: 24,
-      //   durationInMilliSeconds: 80,
-      //   notchBottomBarController: _controllerBottom,
-      //   bottomBarItems: [
-      //     BottomBarItem(
-      //         inActiveItem: bottomBarIconsInactive.bottomBarIconsList[0],
-      //         activeItem: bottomBarIconsActive.bottomBarIconsList[0]),
-      //     BottomBarItem(
-      //         inActiveItem: bottomBarIconsInactive.bottomBarIconsList[2],
-      //         activeItem: bottomBarIconsActive.bottomBarIconsList[2]),
-      //     BottomBarItem(
-      //         inActiveItem: bottomBarIconsInactive.bottomBarIconsList[1],
-      //         activeItem: bottomBarIconsActive.bottomBarIconsList[1]),
-      //
-      //
-      //   ],
-      //   onTap: (index) {
-      //     /// perform action on tab change and to update pages you can update pages without pages
-      //     // log('current selected index $index');
-      //
-      //     _pageViewController.jumpToPage(index);
-      //     setState(() {});
-      //   },
-      // ),
+      floatingActionButton: Container(height: 80,width: 80,child: FloatingActionButton( onPressed: (){Navigator.pushNamed(
+        context,
+        // FormPage.routeName,
+        CategorySelectionPage.routeName,
+
+      );},child: Icon(Icons.add_box,size: 35,),shape: CircleBorder(),foregroundColor: Colors.white,backgroundColor: Color.fromRGBO(86, 105, 255, 1),)),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            // FormPage.routeName,
-            CategorySelectionPage.routeName,
+      bottomNavigationBar: BottomAppBar(
+        surfaceTintColor:  Color.fromRGBO(255, 255, 255, 1),
+        color: Color.fromRGBO(255, 255, 255, 1),
+        notchMargin: 15,
+        shape: const CircularNotchedRectangle(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 30),
+              child: NavButton(
 
-          );
-        },
-        child: Icon(Icons.add),
-      ),
-
-      // bottomNavigationBar: BottomNavigationBar(
-      //     currentIndex: 0,
-      //     onTap: (currentIndex){
-      //       _pageViewController.jumpTo(currentIndex.toDouble());
-      //       setState(() {
-      //
-      //       });
-      //     }
-      //     ,
-      //     items: [
-      //
-      //   BottomNavigationBarItem(icon: bottomBarIconsInactive.bottomBarIconsList[0],label: "explore"),
-      //   BottomNavigationBarItem(icon: bottomBarIconsInactive.bottomBarIconsList[1],label: "request")
-      // ])
-      bottomNavigationBar: NavigationBar(
-          selectedIndex: currentIndex,
-          onDestinationSelected: (index) {
-            currentIndex = index;
-            _pageViewController.jumpToPage(currentIndex);
-            setState(
-              () {},
-            );
-          },
-          destinations: [
-            NavigationDestination(
                 icon: bottomBarIconsActive.bottomBarIconsList[0],
-                label: 'explore'),
-            NavigationDestination(
-                icon:Icon(FontAwesomeIcons.bookmark,color: Color.fromRGBO(58, 120, 255, 1),)
-                ,label: 'My WishList'),
-          ]),
+                isSelected: _selectedIndex == 0,
+                onPress: () {
+                  _pageViewController.jumpToPage(0);
+                  _onNavItemTapped(0);
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right:20),
+              child: NavButton(
+
+                icon: Icon(FontAwesomeIcons.bookmark,color: Color.fromRGBO(58, 120, 255, 1),),
+                isSelected: _selectedIndex == 1,
+                onPress: () {
+                  _pageViewController.jumpToPage(1);
+                  _onNavItemTapped(1);
+                },
+              ),
+            ),
+            // Add more NavButtons as needed
+          ],
+        ),
+      ),
+    );
+  }
+  void _onNavItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+}
+
+class NavButton extends StatelessWidget {
+  final Icon icon;
+  final bool isSelected;
+  final Function() onPress;
+
+  NavButton({
+    required this.icon,
+    required this.isSelected,
+    required this.onPress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: onPress,
+      icon: Icon(
+        icon.icon,
+        color: isSelected ? Colors.blue : null,
+      ),
     );
   }
 }
+
+
+
+

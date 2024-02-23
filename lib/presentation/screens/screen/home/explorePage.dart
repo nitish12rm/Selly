@@ -51,10 +51,14 @@ class _explorePageState extends State<explorePage> {
         builder: (context,state) {
           if(state is UserLoggedInState){
             return Scaffold(
+                backgroundColor: Color.fromRGBO(255 , 255, 255, 100),
                 resizeToAvoidBottomInset: false,
                 appBar: AppBar(
-                  title: Text('Hi, ${state.userModel.name} 👋',style: GoogleFonts.poppins(color: Colors.white),),
-                  actions: [IconButton(onPressed: (){Navigator.pushNamed(context, ProfileScreen.routeName);}, icon: Icon(FontAwesomeIcons.user,color: Colors.white,)),],
+                  title: Padding(
+                    padding: const EdgeInsets.only(left:8),
+                    child: Text('Hi, ${state.userModel.name} 👋',style: GoogleFonts.poppins(color: Colors.white),),
+                  ),
+                  actions: [IconButton(onPressed: (){Navigator.pushNamed(context, ProfileScreen.routeName);}, icon: Icon(FontAwesomeIcons.user,color: Colors.white,)),Container(width: 8,)],
                   backgroundColor:Color.fromRGBO(74, 67, 236, 1) ,
                 ),
                 body: RefreshIndicator(
